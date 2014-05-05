@@ -43,7 +43,7 @@ when "redhat", "centos", "fedora"
         owner    "root"
         group    "root"
         mode     0644
-        notifies :reload, resources(:service => "redis")
+        notifies :start, resources(:service => "redis")
     end
 
 end
