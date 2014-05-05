@@ -12,7 +12,7 @@ case node["platform"]
     
 when "debian", "ubuntu"
     package "redis-server" do
-        action :intall
+        action :install
     end
 
     service "redis-server" do
