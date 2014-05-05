@@ -7,19 +7,49 @@
 # All rights reserved - Do Not Redistribute
 #
 
-package "redis" do
-    action :install
+
+case node["platform"]
+    
+when "debian", "ubuntu"
+    package "redis-server" do
+        action :intall
+    end
+
+    service "redis-server" do
+        supports :start => true, :stop => true, :status => true, :restart => true
+        action :nothing
+    end
+    
+    template "/etc/redis/redis.conf" do 
+        source   "redis.conf.erb"
+        owner    "root"
+        group    "root"
+        mode     0644
+        notifies :reload, resources(:service => "redis-server")
+    end
+
+when "redhat", "centos", "fedora"
+    package "redis" do
+        action :install
+    end
+
+    service "redis" do
+        supports :start => true, :stop => true, :status => true, :restart => true, :condrestart => true
+        action :nothing
+    end
+    
+    template "/etc/redis.conf" do 
+        source   "redis.conf.erb"
+        owner    "root"
+        group    "root"
+        mode     0644
+        notifies :reload, resources(:service => "redis")
+    end
+
 end
 
-service "redis" do
-    supports :start => true, :stop => true, :status => true, :restart => true, :condrestart => true
-    action :nothing
-end
 
-template "/etc/redis.conf" do 
-    source   "redis.conf.erb"
-    owner    "root"
-    group    "root"
-    mode     0644
-    notifies :reload, resources(:service => "redis")
-end
+
+
+
+
