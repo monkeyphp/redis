@@ -6,8 +6,6 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-
-
 case node["platform"]
     
 when "debian", "ubuntu"
@@ -30,6 +28,7 @@ when "debian", "ubuntu"
 
 when "redhat", "centos", "fedora"
     package "redis" do
+        version "2.4.10-1.el6"
         action :install
     end
 
